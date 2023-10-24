@@ -1,0 +1,87 @@
+export type PerfectBindingState = {
+  data: {
+    perf_type: string;
+    perf_finished_size: string;
+    perf_cover: string;
+    perf_text: string;
+    perf_cover_paper: string;
+    perf_text_paper: string;
+    perf_printing: string;
+    perf_cover_coating: string;
+    perf_text_coating: string;
+    perf_500: number;
+    perf_1000: number;
+    perf_2000: number;
+    perf_3000: number;
+    perf_4000: number;
+    perf_5000: number;
+  };
+  data_text_no: {
+    perf_type: string;
+    perf_finished_size: string;
+    perf_cover: string;
+    perf_text: string;
+    perf_cover_paper: string;
+    perf_text_paper: string;
+    perf_printing: string;
+    perf_cover_coating: string;
+    perf_text_coating: string;
+    perf_500: number;
+    perf_1000: number;
+    perf_2000: number;
+    perf_3000: number;
+    perf_4000: number;
+    perf_5000: number;
+  };
+  data_text_paper: {
+    perf_type: string;
+    perf_finished_size: string;
+    perf_cover: string;
+    perf_text: string;
+    perf_cover_paper: string;
+    perf_text_paper: string;
+    perf_printing: string;
+    perf_cover_coating: string;
+    perf_text_coating: string;
+    perf_500: number;
+    perf_1000: number;
+    perf_2000: number;
+    perf_3000: number;
+    perf_4000: number;
+    perf_5000: number;
+  };
+  data_printing: {
+    perf_type: string;
+    perf_finished_size: string;
+    perf_cover: string;
+    perf_text: string;
+    perf_cover_paper: string;
+    perf_text_paper: string;
+    perf_printing: string;
+    perf_cover_coating: string;
+    perf_text_coating: string;
+    perf_500: number;
+    perf_1000: number;
+    perf_2000: number;
+    perf_3000: number;
+    perf_4000: number;
+    perf_5000: number;
+  };
+  data_cover_paper_edit : {
+    perf_type: string;
+    perf_finished_size: string;
+    perf_cover: string;
+    perf_text: string;
+    perf_cover_paper: string;
+    perf_text_paper: string;
+    perf_printing: string;
+    perf_cover_coating: string;
+    perf_text_coating: string;
+    perf_500: number;
+    perf_1000: number;
+    perf_2000: number;
+    perf_3000: number;
+    perf_4000: number;
+    perf_5000: number; 
+  }
+};
