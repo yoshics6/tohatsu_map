@@ -104,12 +104,12 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: true,
     label: "Longitude",
   },
-  // {
-  //   id: "-",
-  //   numeric: false,
-  //   disablePadding: true,
-  //   label: "Action",
-  // },
+  {
+    id: "-",
+    numeric: false,
+    disablePadding: true,
+    label: "Action",
+  },
 ];
 
 interface EnhancedTableProps {
@@ -141,7 +141,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox" align="center">
+        <TableCell padding="checkbox" align="center">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -151,7 +151,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
               "aria-label": "select all desserts",
             }}
           />
-        </TableCell> */}
+        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}

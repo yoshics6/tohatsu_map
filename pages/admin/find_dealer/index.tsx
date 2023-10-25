@@ -291,10 +291,10 @@ const Find_Dealer: NextPage = () => {
                       const labelId = `enhanced-table-checkbox-${index}`;
 
                       return (
-                        <TableRow
+                        <TableRow key={index}
                           hover
                         >
-                          {/* <TableCell padding="checkbox" align="center">
+                          <TableCell padding="checkbox" align="center">
                             <Checkbox
                               color="primary"
                               checked={isItemSelected}
@@ -310,7 +310,7 @@ const Find_Dealer: NextPage = () => {
                               key={row.fd_id}
                             // selected={isItemSelected}
                             />
-                          </TableCell> */}
+                          </TableCell>
                           <TableCell align="center">{index + 1}</TableCell>
                           <TableCell align="center">
                             {row.fd_code}
@@ -351,14 +351,14 @@ const Find_Dealer: NextPage = () => {
                           <TableCell align="center">
                             {row.fd_longitude}
                           </TableCell>
-                          {/* <TableCell align="center">
+                          <TableCell align="center">
                             <Stack
                               direction="row"
                               alignItems="center"
                               justifyContent="center"
                               spacing={0}
                             >
-                              <IconButton
+                              {/* <IconButton
                                 color="primary"
                                 aria-label="edit"
                                 size="large"
@@ -369,7 +369,7 @@ const Find_Dealer: NextPage = () => {
                                 }
                               >
                                 <EditIcon fontSize="inherit" />
-                              </IconButton>
+                              </IconButton> */}
 
                               <IconButton
                                 color="error"
@@ -380,7 +380,7 @@ const Find_Dealer: NextPage = () => {
                                 <DeleteIcon fontSize="inherit" />
                               </IconButton>
                             </Stack>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       );
                     })

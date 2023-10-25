@@ -16,18 +16,63 @@ import location from "@/components/Map/location";
 // var dis = fromLatLng.distanceTo(toLatLng) / 1000;
 // console.log(dis);
 
+import Swal from "sweetalert2";
+import router from "next/router";
+// Table
+import { getComparator, stableSort, Order } from "@/components/table/Table";
+import {
+  EnhancedTableHead,
+  EnhancedTableToolbarProps,
+} from "@/components/table/admin/find_dealer/TableHeads";
+import {
+  getFindDealer,
+  deleteFindDealer,
+  deleteAllFindDealer,
+} from "@/features/admin/find_dealer";
+import { appDispatch, appSelector } from "@/store/hooks";
+import { MenuItem } from "@mui/base";
+import axios from "axios";
+
 interface Label {
   position: any;
   name: any;
   distance: any;
   imgs: any;
 }
+
 const Maps = () => {
+
+  const dispatch = appDispatch();
+  const [searched, setSearched] = React.useState<string>("");
+  const { data } = appSelector((state) => state.find_dealer);
+
+  var rows: any = data ?? [];
+
+    // *************************** Use Effect ***************************
+    React.useEffect(() => {
+      dispatch(getFindDealer(""));
+    }, [dispatch]);
+  
+    React.useEffect(() => {
+      dispatch(getFindDealer(searched));
+    }, [dispatch, searched]);
+    // *************************** Use Effect ***************************
+
+    // console.log(rows)
+
   const [center, setCenter] = React.useState<any>([32.90691, -96.413837]);
+  const [center_lat, setCenterLat] = React.useState<any>(32.90691);
+  const [center_long, setCenterLong] = React.useState<any>(-96.413837);
+
+  navigator.geolocation.getCurrentPosition(function(position) {
+    setCenterLat(position.coords.latitude);
+    setCenterLong(position.coords.longitude);
+  });
+  
   return (
     <MapContainer
       style={{
-        height: "100vh",
+        height: "50vh",
         width: "100vw",
       }}
       center={center}
@@ -37,13 +82,34 @@ const Maps = () => {
       <TileLayer url="https://www.google.com/maps/vt?lyrs=m@189&x={x}&y={y}&z={z}" />
 
       <MarkerClusterGroup>
-        {location.map((value: Label, key) => {
+        {rows.length > 0 ? rows.map((value:any) => {
+
+        // if (value.fd_busines_type.toLowerCase().search('Sales & Service'.toLowerCase()) !=-1) 
+        // {
+        //   console.log(1)
+        // }
+
+          let lat = parseFloat(value.fd_latitude);  
+          let long = parseFloat(value.fd_longitude); 
+          
+          if(value.fd_busines_type == 'Sales & Service'){
+            var flag = 'https://map.iwelcome.net/asset/markercolor/img/marker-icon-2x-red.png';
+          }
+          else if(value.fd_busines_type == 'Service Only'){
+            var flag = 'https://map.iwelcome.net/asset/markercolor/img/marker-icon-2x-green.png';
+          }
+          else{
+            var flag = 'https://map.iwelcome.net/asset/markercolor/img/marker-icon-2x-gold.png';
+          }
+
+          var distances = distance(center_lat , center_long , lat , long)
+
           return (
             <Marker
-              key={key}
+              key={value.fd_id}
               icon={
                 new L.Icon({
-                  iconUrl: value.imgs, // MarkerIcon.src,
+                  iconUrl: flag, // MarkerIcon.src,
                   iconRetinaUrl: MarkerIcon.src,
                   iconSize: [25, 41],
                   iconAnchor: [12.5, 41],
@@ -52,18 +118,31 @@ const Maps = () => {
                   shadowSize: [41, 41],
                 })
               }
-              position={value.position}
+              position={[lat,long]}
             >
               <Popup>
-                <p>{`Dealer : ${value.name}`}</p>
-                <p>{`Distance : ${value.distance}`}</p>
+                <p>{`Dealer : ${value.fd_dealer}`}</p>
+                <p>{`Distance : ${distances}`}</p>
               </Popup>
             </Marker>
           );
-        })}
+        }): ""}
       </MarkerClusterGroup>
     </MapContainer>
   );
 };
+function distance(lat1: any, lon1: any, lat2: any, lon2: any) {
+  var R = 6371; // km (change this constant to get miles)
+  var dLat = (lat2 - lat1) * Math.PI / 180;
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  if (d > 1) return Math.round(d) + " kilometer ";
+  else if (d <= 1) return Math.round(d * 1000) + " meter ";
+  return d;
+}
 
 export default Maps;

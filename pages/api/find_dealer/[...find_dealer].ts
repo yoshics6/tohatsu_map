@@ -41,8 +41,8 @@ interface CoverPaper extends Array<CoverPaperData> { }
 
 // Middleware
 router.use(async (req: NextApiRequest, res: NextApiResponse, next) => {
-  const decoded = await adminAuth(req, res);
-  req.decoded = decoded;
+  // const decoded = await adminAuth(req, res);
+  // req.decoded = decoded;
   await next();
 });
 
@@ -145,9 +145,9 @@ router.post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { oc_id } = fields;
+      const { fd_id } = fields;
       await connection.query(
-        `DELETE FROM find_dealer WHERE oc_id = ${oc_id}`
+        `DELETE FROM find_dealer WHERE oc_id = ${fd_id}`
       );
       res.status(200).json({ status: "success" });
     });
@@ -159,9 +159,9 @@ router.post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { oc_id } = fields;
-      let id = oc_id.toString();
-      await connection.query(`DELETE FROM find_dealer WHERE oc_id IN (${id})`);
+      const { fd_id } = fields;
+      let id = fd_id.toString();
+      await connection.query(`DELETE FROM find_dealer WHERE fd_id IN (${id})`);
       res.status(200).json({ status: "success" });
     });
   }
@@ -208,7 +208,7 @@ async function importExcelUser(url: string) {
       const fd_address = rows["Address"];
       const fd_road = rows["Road"];
       const fd_subdistrict = rows["SubDistrict"] == null ? '-' : rows["SubDistrict"];
-      const fd_district = rows["District"];
+      const fd_district = rows["District"] == null ? '-' : rows["District"];
       const fd_zipcode = rows["Zipcode"];
       const fd_tel = rows["Tel"];
       const fd_latitude = rows["Latitude"];

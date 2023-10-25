@@ -7,7 +7,7 @@ import { Provider, useStore } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
 // css
-import "../public/static/css/stylesheet.css";
+// import "../public/static/css/stylesheet.css";
 
 // tailwind css
 // import "tailwindcss/tailwind.css";
