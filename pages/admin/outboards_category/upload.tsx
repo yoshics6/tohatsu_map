@@ -19,7 +19,7 @@ import FormControl from "@mui/material/FormControl";
 import Swal from "sweetalert2";
 import dayjs, { Dayjs } from "dayjs";
 import { appDispatch, appSelector } from "@/store/hooks";
-import { uploadTextNo } from "@/features/admin/text_no";
+import { uploadOc } from "@/features/admin/outboards_category";
 import router, { useRouter } from "next/router";
 import axios from "axios";
 import { getCookie } from "cookies-next";
@@ -114,7 +114,7 @@ const showFormExcel = ({ values, setFieldValue }: FormikProps<any>) => {
                       >
                         File Format:{" "}
                         <a
-                          href={`/format/text_no/Upload_Text_No.xlsx`}
+                          href={`/format/outboards_category/Upload_Text_No.xlsx`}
                           style={{
                             marginLeft: "10px",
                             color: "blue",
@@ -171,7 +171,7 @@ const showFormExcel = ({ values, setFieldValue }: FormikProps<any>) => {
             variant="contained"
             color="error"
             fullWidth
-            onClick={() => router.push("/admin/text_no")}
+            onClick={() => router.push("/admin/outboards_category")}
           >
             Cancel
           </Button>
@@ -213,7 +213,7 @@ function Upload() {
                     formData.append("file", blob, filename);
                     var urlupload = process.env.NEXT_PUBLIC_BASE_URL_API;
                     const response: any = await axios.post(
-                      `${urlupload}/text_no/upload`,
+                      `${urlupload}/outboards_category/upload`,
                       formData
                     );
                     if (response.data.status == "success") {
@@ -222,7 +222,7 @@ function Upload() {
                         "Your text no has been uploaded.",
                         "success"
                       ).then(function () {
-                        router.push("/admin/text_no");
+                        router.push("/admin/outboards_category");
                       });
                     } else {
                       Swal.fire(

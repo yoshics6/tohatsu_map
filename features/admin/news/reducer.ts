@@ -4,12 +4,13 @@ import { newsState } from "@/models/news.model";
 
 const initialState: newsState = {
   data: {
-    news_id: "",
-    topic: "",
-    post_date: "",
-    status: "",
-    detail: "",
-    created_at: "",
+    news_id: 0,
+    news_date: "",
+    news_title: "",
+    news_image: "",
+    news_detail: "",
+    news_status: "",
+    news_created_at: ""
   },
 };
 

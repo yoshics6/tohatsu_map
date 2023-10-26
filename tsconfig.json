@@ -24,6 +24,6 @@
       // "@/services/*": ["services/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/index.tsx", "pages/a.tsx", "features/admin/contact_year_req/export_pdf.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/index.tsx", "pages/a.tsx", "features/admin/contact_year_req/export_pdf.js", "components/Map/Form.tsx"],
   "exclude": ["node_modules"]
 }

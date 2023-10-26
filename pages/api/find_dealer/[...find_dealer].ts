@@ -67,8 +67,11 @@ router.get(
     try {
       console.log(keyword);
       const [response]: any = await connection.query(
-        `SELECT * FROM find_dealer WHERE oc_date LIKE ? OR oc_category_name LIKE ? ORDER BY CAST(oc_category_name AS UNSIGNED)`,
-        ["%" + keyword + "%", "%" + keyword + "%"]
+        `SELECT * FROM find_dealer WHERE fd_code LIKE ? OR fd_dealer LIKE ? OR fd_shop LIKE ? OR fd_busines_type LIKE ? OR fd_province LIKE ? OR fd_address LIKE ?
+        OR fd_road LIKE ? OR fd_subdistrict LIKE ? OR fd_district LIKE ? OR fd_zipcode LIKE ? OR fd_tel LIKE ? OR fd_latitude LIKE ? OR fd_longitude LIKE ?
+        ORDER BY CAST(fd_created_at AS UNSIGNED)`,
+        ["%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%"
+          , "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%"]
       );
       res.status(200).json({ status: "success", data: response });
     } catch {

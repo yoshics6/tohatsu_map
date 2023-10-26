@@ -19,7 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { appDispatch, appSelector } from "@/store/hooks";
-import { getTextNo, editTextNo, getTextNoById } from "@/features/admin/text_no";
+import { getOc, editOc, getOcById } from "@/features/admin/outboards_category";
 import router, { useRouter } from "next/router";
 
 function Edit() {
@@ -37,7 +37,7 @@ function Edit() {
     }
   }
   React.useEffect(() => {
-    dispatch(getTextNoById(id)).then((value: any) => {
+    dispatch(getOcById(id)).then((value: any) => {
       if (value.payload) {
         if (value.payload.length > 0) {
           setTextNo_name(value.payload[0].text_no_name);
@@ -89,7 +89,7 @@ function Edit() {
               variant="contained"
               color="error"
               fullWidth
-              onClick={() => router.push("/admin/text_no")}
+              onClick={() => router.push("/admin/outboards_category")}
             >
               Cancel
             </Button>
@@ -119,14 +119,14 @@ function Edit() {
               let data = new FormData();
               data.append("text_no_name", String(text_no_name));
               data.append("text_no_id", id);
-              dispatch(editTextNo(data)).then((result: any) => {
+              dispatch(editOc(data)).then((result: any) => {
                 if (result.payload.data.status == "success") {
                   Swal.fire(
                     "Success!",
                     "Your data has been updated",
                     "success"
                   ).then(function () {
-                    router.push("/admin/text_no");
+                    router.push("/admin/outboards_category");
                   });
                 } else {
                   Swal.fire(

@@ -114,7 +114,7 @@ const showFormExcel = ({ values, setFieldValue }: FormikProps<any>) => {
                       >
                         File Format:{" "}
                         <a
-                          href={`/format/find_dealer/Upload_find_dealer.xlsx`}
+                          href={`/format/find_dealer/Upload_Find_Dealer.xlsx`}
                           style={{
                             marginLeft: "10px",
                             color: "blue",

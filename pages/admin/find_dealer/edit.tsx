@@ -19,7 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { appDispatch, appSelector } from "@/store/hooks";
-import { getTextNo, editTextNo, getTextNoById } from "@/features/admin/text_no";
+import { getFindDealer, editFindDealer, getFindDealerById } from "@/features/admin/find_dealer";
 import router, { useRouter } from "next/router";
 
 function Edit() {
@@ -29,18 +29,18 @@ function Edit() {
   const [status, setStatus] = React.useState<String>("active");
   const [date, setDate] = React.useState<Dayjs | null>(dayjs());
   const { data } = appSelector((state) => state.cover_paper);
-  const [text_no_name, setTextNo_name] = React.useState<String>("");
+  const [text_no_name, setFindgetFindDealer_name] = React.useState<String>("");
 
   if (data) {
     if (data.length === 0) {
-      router.push("/admin/text_no");
+      router.push("/admin/find_dealer");
     }
   }
   React.useEffect(() => {
-    dispatch(getTextNoById(id)).then((value: any) => {
+    dispatch(getFindDealerById(id)).then((value: any) => {
       if (value.payload) {
         if (value.payload.length > 0) {
-          setTextNo_name(value.payload[0].text_no_name);
+          setFindgetFindDealer_name(value.payload[0].text_no_name);
         }
       }
     });
@@ -56,7 +56,7 @@ function Edit() {
         <Card>
           <CardContent sx={{ padding: 4 }}>
             <Typography gutterBottom variant="h4">
-            Setting {'>'} Text No {'>'} Edit
+              Setting {'>'} Text No {'>'} Edit
             </Typography>
 
             <Field
@@ -67,7 +67,7 @@ function Edit() {
               label="Name"
               value={text_no_name}
               onChange={(e: any) => {
-                setTextNo_name(e.target.value);
+                setFindgetFindDealer_name(e.target.value);
               }}
             />
             <br />
@@ -119,7 +119,7 @@ function Edit() {
               let data = new FormData();
               data.append("text_no_name", String(text_no_name));
               data.append("text_no_id", id);
-              dispatch(editTextNo(data)).then((result: any) => {
+              dispatch(editFindDealer(data)).then((result: any) => {
                 if (result.payload.data.status == "success") {
                   Swal.fire(
                     "Success!",

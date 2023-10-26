@@ -71,7 +71,7 @@ const Login = ({ }: Props) => {
           rawResponse.json().then((data) => {
             if (data.status == "success") {
               Swal.fire("Success!", "", "success").then(function () {
-                location.href = "/admin/find_dealer"; // user
+                location.href = "/admin/user"; // find_dealer
               });
               return false;
             } else {
@@ -175,10 +175,10 @@ const Login = ({ }: Props) => {
         >
           <Typography variant="h5" gutterBottom sx={{ textAlign: "center" }}>
             TOHATSU
-          </Typography><br/>
+          </Typography><br />
           <Typography gutterBottom sx={{ textAlign: "center" }}>
             ________________________ Back-End Login ________________________
-          </Typography><br/>
+          </Typography><br />
           <Controller
             render={({ field }) => (
               <TextField
