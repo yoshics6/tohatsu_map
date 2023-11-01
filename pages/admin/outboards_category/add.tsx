@@ -20,10 +20,8 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const initialValues: any = {
-  oc_id: 0,
-  oc_date: "",
+  oc_date: dayjs(),
   oc_category_name: "",
-  oc_created_at: "",
 };
 
 function Add() {
@@ -39,7 +37,7 @@ function Add() {
         <Card>
           <CardContent sx={{ padding: 4 }}>
             <Typography gutterBottom variant="h4">
-              Setting {'>'} Outboards Category {'>'} Add one by one
+              Outboards {'>'} Category {'>'} Add one by one
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <MobileDatePicker
@@ -60,7 +58,7 @@ function Add() {
               component={TextFieldInput}
               name="oc_category_name"
               type="text"
-              label="Category Name"
+              label="Category Name *"
             />
             <br />
             <br />
@@ -103,12 +101,35 @@ function Add() {
           <Formik
             validate={(values) => {
               let errors: any = {};
-              if (!values.oc_category_name) errors.oc_category_name = "Enter Name";
+              // if (!values.oc_category_name) errors.oc_category_name = "Enter Name";
               return errors;
             }}
             initialValues={initialValues}
             onSubmit={async (values, { setSubmitting }) => {
+
+              if (values.oc_category_name == '') {
+                Swal.fire(
+                  "Warning!",
+                  "Please fill out the information completely.",
+                  "info"
+                )
+                return false;
+              }
+
+              const value_date = dayjs(date, "YYYY-MM-DD").toDate();
+              let day: any = value_date.getDate();
+              let month: any = value_date.getMonth() + 1;
+              if (month <= 9) {
+                month = "0" + month;
+              }
+              if (day <= 9) {
+                day = "0" + day;
+              }
+              const year = value_date.getFullYear();
+              const oc_date = year + "-" + month + "-" + day;
+
               let data = new FormData();
+              data.append("oc_date", oc_date);
               data.append("oc_category_name", values.oc_category_name);
               dispatch(addOc(data)).then((result: any) => {
                 if (result.payload.data.status == "success") {

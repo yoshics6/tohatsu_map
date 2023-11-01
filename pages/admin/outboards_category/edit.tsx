@@ -28,26 +28,28 @@ function Edit() {
   const editorRef = useRef<any>(null);
   const [status, setStatus] = React.useState<String>("active");
   const [date, setDate] = React.useState<Dayjs | null>(dayjs());
-  const { data } = appSelector((state) => state.cover_paper);
-  const [text_no_name, setTextNo_name] = React.useState<String>("");
+  const { data } = appSelector((state) => state.outboards_category);
+  const [oc_category_name, setCategoryName] = React.useState<String>("");
 
   if (data) {
     if (data.length === 0) {
-      router.push("/admin/text_no");
+      router.push("/admin/outboards_category");
     }
   }
   React.useEffect(() => {
     dispatch(getOcById(id)).then((value: any) => {
       if (value.payload) {
         if (value.payload.length > 0) {
-          setTextNo_name(value.payload[0].text_no_name);
+          setDate(dayjs(value.payload[0].oc_date));
+          setCategoryName(value.payload[0].oc_category_name);
         }
       }
     });
   }, [dispatch, id]);
 
   const initialValues: any = {
-    text_no_name: text_no_name,
+    oc_date: date,
+    oc_category_name: oc_category_name,
   };
 
   const showForm = ({ values, setFieldValue, isValid }: FormikProps<any>) => {
@@ -56,18 +58,30 @@ function Edit() {
         <Card>
           <CardContent sx={{ padding: 4 }}>
             <Typography gutterBottom variant="h4">
-            Setting {'>'} Text No {'>'} Edit
+              Outboards {'>'} Category {'>'} Edit
             </Typography>
-
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <MobileDatePicker
+                label="Post Date *"
+                format="YYYY-MM-DD"
+                value={dayjs(`${date}`)}
+                onChange={(newValue: any) => {
+                  setDate(newValue);
+                }}
+                sx={{ width: "100%" }}
+              />
+            </LocalizationProvider>
+            <br />
+            <br />
             <Field
               fullWidth
               component={TextFieldInput}
-              name="text_no_name"
+              name="oc_category_name"
               type="text"
-              label="Name"
-              value={text_no_name}
+              label="Category Name *"
+              value={oc_category_name}
               onChange={(e: any) => {
-                setTextNo_name(e.target.value);
+                setCategoryName(e.target.value);
               }}
             />
             <br />
@@ -111,14 +125,37 @@ function Edit() {
           <Formik
             validate={(values) => {
               let errors: any = {};
-              if (!String(text_no_name)) errors.text_no_name = "Enter Name";
+              // if (!String(oc_category_name)) errors.oc_category_name = "Enter Category Name";
               return errors;
             }}
             initialValues={initialValues}
             onSubmit={async (values, { setSubmitting }) => {
+
+              if (initialValues.oc_category_name == '') {
+                Swal.fire(
+                  "Warning!",
+                  "Please fill out the information completely.",
+                  "info"
+                )
+                return false;
+              }
+
+              const value_date = dayjs(date, "YYYY-MM-DD").toDate();
+              let day: any = value_date.getDate();
+              let month: any = value_date.getMonth() + 1;
+              if (month <= 9) {
+                month = "0" + month;
+              }
+              if (day <= 9) {
+                day = "0" + day;
+              }
+              const year = value_date.getFullYear();
+              const oc_date = year + "-" + month + "-" + day;
+
               let data = new FormData();
-              data.append("text_no_name", String(text_no_name));
-              data.append("text_no_id", id);
+              data.append("oc_date", oc_date);
+              data.append("oc_category_name", String(oc_category_name));
+              data.append("oc_id", id);
               dispatch(editOc(data)).then((result: any) => {
                 if (result.payload.data.status == "success") {
                   Swal.fire(

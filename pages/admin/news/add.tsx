@@ -37,7 +37,7 @@ const showPreviewImage = (values: any) => {
         alt="product image"
         src={values.file_obj}
         width={200}
-        height={100}
+        height={200}
       />
     );
   }
@@ -235,7 +235,7 @@ function Add() {
             }}
             initialValues={initialValues}
             onSubmit={async (values, { setSubmitting }) => {
-              
+
               if (editorRef.current.getContent() == '' && initialValues) {
                 Swal.fire(
                   "Warning!",

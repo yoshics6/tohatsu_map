@@ -97,14 +97,22 @@ router.put(
     const form = formidable();
     form.parse(req, async (err, fields, files: any) => {
       const { dm_date, dm_subject, dm_category, dm_horse_power, dm_stroke_models, English, Francais, Espanol, Deutsch, dm_status } = fields;
-      const name_en = Math.random().toString(16).slice(2) + "_" + files.file_en.originalFilename;
-      fs.copyFileSync(files.file_en.filepath, `public/upload/downloads_manuals/${name_en}`);
-      const name_fr = Math.random().toString(16).slice(2) + "_" + files.file_fr.originalFilename;
-      fs.copyFileSync(files.file_fr.filepath, `public/upload/downloads_manuals/${name_fr}`);
-      const name_es = Math.random().toString(16).slice(2) + "_" + files.file_es.originalFilename;
-      fs.copyFileSync(files.file_es.filepath, `public/upload/downloads_manuals/${name_es}`);
-      const name_de = Math.random().toString(16).slice(2) + "_" + files.file_de.originalFilename;
-      fs.copyFileSync(files.file_de.filepath, `public/upload/downloads_manuals/${name_de}`);
+      if (English != '' || Francais != '' || Espanol != '' || Deutsch != '') {
+        var name_en = Math.random().toString(16).slice(2) + "_" + files.file_en.originalFilename;
+        fs.copyFileSync(files.file_en.filepath, `public/upload/downloads_manuals/${name_en}`);
+        var name_fr = Math.random().toString(16).slice(2) + "_" + files.file_fr.originalFilename;
+        fs.copyFileSync(files.file_fr.filepath, `public/upload/downloads_manuals/${name_fr}`);
+        var name_es = Math.random().toString(16).slice(2) + "_" + files.file_es.originalFilename;
+        fs.copyFileSync(files.file_es.filepath, `public/upload/downloads_manuals/${name_es}`);
+        var name_de = Math.random().toString(16).slice(2) + "_" + files.file_de.originalFilename;
+        fs.copyFileSync(files.file_de.filepath, `public/upload/downloads_manuals/${name_de}`);
+      }
+      else {
+        var name_en = '';
+        var name_fr = '';
+        var name_es = '';
+        var name_de = '';
+      }
       // let arr = 0;
       // const [check]: any = await connection.query(
       //   "SELECT MAX(arr) as arr FROM news"

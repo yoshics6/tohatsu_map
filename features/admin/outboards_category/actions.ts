@@ -51,7 +51,7 @@ export const deleteAllOc = createAsyncThunk(
   "outboards_category/alldelete",
   async (id?: any) => {
     const url = process.env.NEXT_PUBLIC_BASE_URL_API;
-    await axios.post(`${url}/outboards_category/deleteall`, { outboards_category_id: id });
+    await axios.post(`${url}/outboards_category/deleteall`, { oc_id : id });
     return { status: "success" };
   }
 );

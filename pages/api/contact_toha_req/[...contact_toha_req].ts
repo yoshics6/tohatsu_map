@@ -51,7 +51,7 @@ router.get(
         `SELECT * FROM contact_toha_req 
          WHERE contact_date LIKE ? OR contact_email LIKE ? OR contact_first_name LIKE ? OR contact_last_name LIKE ? OR contact_address LIKE ? OR
          contact_city LIKE ? OR contact_province LIKE ? OR contact_postal_code LIKE ? OR
-         contact_message LIKE ? OR contact_telephone OR contact_model LIKE ? OR contact_serial_number LIKE ? OR contact_horsepower LIKE ?
+         contact_telephone LIKE ? OR contact_model LIKE ? OR contact_serial_number LIKE ? OR contact_horsepower LIKE ? OR contact_message LIKE ?
          ORDER BY contact_date DESC`,
         [
           "%" + keyword + "%",

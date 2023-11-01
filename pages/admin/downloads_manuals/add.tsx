@@ -43,7 +43,7 @@ const showPreviewImage = (values: any) => {
         alt="product image"
         src={values.file_obj}
         width={200}
-        height={100}
+        height={200}
       />
     );
   }
@@ -57,7 +57,7 @@ function Add() {
   const [dmhorsepower, setDmhorsepower] = React.useState<String>("2");
   const [dmstrokemodels, setDmstrokemodels] = React.useState<String>("2-STROKE MODELS (CARBURETED)");
   const [date, setDate] = React.useState<Dayjs | null>(dayjs());
-  const [isEnglish, setIsEnglish] = React.useState<any>("English");
+  const [isEnglish, setIsEnglish] = React.useState<any>(false);
   const [isFrancais, setIsFrancais] = React.useState<any>(false);
   const [isEspanol, setIsEspanol] = React.useState<any>(false);
   const [isDeutsch, setIsDeutsch] = React.useState<any>(false);
@@ -208,8 +208,8 @@ function Add() {
             </Grid>
             <br />
             <div>
-              Additional File * <br />
-              <Box style={{ color: "red" }}>Please fill in at least 1 additional file. default English</Box><br />
+              Additional File * <br /><br />
+              {/* <Box style={{ color: "red" }}>Please fill in at least 1 additional file. default English</Box><br /> */}
               <label htmlFor="English">
                 <input
                   type="checkbox"
@@ -217,7 +217,7 @@ function Add() {
                   onChange={handleChangeEn}
                   id="English"
                   name="English"
-                  checked
+                // checked
                 />
                 &nbsp; English
               </label>
@@ -261,40 +261,40 @@ function Add() {
             <br />
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                {/* {isEnglish ? */}
-                <>
-                  <span style={{ color: "000" }}>
-                    English File (PDF/JPG) *
-                  </span>
-                  <input
-                    type="file"
-                    onChange={(e: React.ChangeEvent<any>) => {
-                      e.preventDefault();
-                      if (e.target.files[0]) {
-                        if ((e.target.files[0].size / 1024) > 102400) {
-                          Swal.fire(
-                            "Warning",
-                            "Your data has been uploaded.",
-                            "warning"
-                          )
-                          setFieldValue("file_en", "");
-                        } else {
-                          setFieldValue("file_en", e.target.files[0]);
-                          setFieldValue(
-                            "file_obj",
-                            URL.createObjectURL(e.target.files[0])
-                          );
+                {isEnglish ?
+                  <>
+                    <span style={{ color: "000" }}>
+                      English File (PDF/JPG) *
+                    </span>
+                    <input
+                      type="file"
+                      onChange={(e: React.ChangeEvent<any>) => {
+                        e.preventDefault();
+                        if (e.target.files[0]) {
+                          if ((e.target.files[0].size / 1024) > 102400) {
+                            Swal.fire(
+                              "Warning",
+                              "Your data has been uploaded.",
+                              "warning"
+                            )
+                            setFieldValue("file_en", "");
+                          } else {
+                            setFieldValue("file_en", e.target.files[0]);
+                            setFieldValue(
+                              "file_obj",
+                              URL.createObjectURL(e.target.files[0])
+                            );
+                          }
                         }
-                      }
-                    }}
-                    name="file_en"
-                    accept="image/* , .pdf"
-                    id="file_en"
-                    style={{ padding: "20px 0 0 20px" }}
-                  />
-                  <Box style={{ color: "red" }}>* File size should not be over 100MB</Box>
-                </>
-                {/* : ''} */}
+                      }}
+                      name="file_en"
+                      accept="image/* , .pdf"
+                      id="file_en"
+                      style={{ padding: "20px 0 0 20px" }}
+                    />
+                    <Box style={{ color: "red" }}>* File size should not be over 100MB</Box>
+                  </>
+                  : ''}
               </Grid>
               <Grid item xs={6}>
                 {isFrancais ?
@@ -486,9 +486,7 @@ function Add() {
                 )
                 return false;
               }
-              if (values.file_en.name != undefined || values.file_fr.name != undefined || values.file_es.name != undefined || values.file_de.name != undefined) {
-              }
-              else {
+              if (isEnglish == "English" && values.file_en.name == undefined) {
                 Swal.fire(
                   "Warning!",
                   "Please upload the file.",
@@ -496,6 +494,31 @@ function Add() {
                 )
                 return false;
               }
+              else if (isFrancais == "Francais" && values.file_fr.name == undefined) {
+                Swal.fire(
+                  "Warning!",
+                  "Please upload the file.",
+                  "info"
+                )
+                return false;
+              }
+              else if (isEspanol == "Espanol" && values.file_es.name == undefined) {
+                Swal.fire(
+                  "Warning!",
+                  "Please upload the file.",
+                  "info"
+                )
+                return false;
+              }
+              else if (isDeutsch == "Deutsch" && values.file_de.name == undefined) {
+                Swal.fire(
+                  "Warning!",
+                  "Please upload the file.",
+                  "info"
+                )
+                return false;
+              }
+              else { }
 
               const value_date = dayjs(date, "YYYY-MM-DD").toDate();
               let day: any = value_date.getDate();
@@ -508,60 +531,112 @@ function Add() {
               }
               const year = value_date.getFullYear();
               const dm_date = year + "-" + month + "-" + day;
-              var filename_en = values.file_en.name;
-              var filename_fr = values.file_fr.name;
-              var filename_es = values.file_es.name;
-              var filename_de = values.file_de.name;
-              var reader = new FileReader();
-              reader.onload = function (event: any) {
-                var imagevalue = event.target.result;
-                fetch(imagevalue)
-                  .then((res) => res.blob())
-                  .then(async (blob) => {
-                    var formData = new FormData();
-                    formData.append("dm_date", dm_date);
-                    formData.append("dm_subject", values.dm_subject);
-                    formData.append("dm_category", String(category));
-                    formData.append("dm_horse_power", String(dmhorsepower));
-                    formData.append("dm_stroke_models", String(dmstrokemodels));
-                    formData.append("English", String(isEnglish));
-                    formData.append("file_en", blob, filename_en);
-                    formData.append("Francais", String(isFrancais));
-                    formData.append("file_fr", blob, filename_fr);
-                    formData.append("Espanol", String(isEspanol));
-                    formData.append("file_es", blob, filename_es);
-                    formData.append("Deutsch", String(isDeutsch));
-                    formData.append("file_de", blob, filename_de);
-                    formData.append("dm_status", String(status));
+              var filename_en = values.file_en.name == undefined ? isEnglish : values.file_en.name;
+              var filename_fr = values.file_fr.name == undefined ? isFrancais : values.file_fr.name;
+              var filename_es = values.file_es.name == undefined ? isEspanol : values.file_es.name;
+              var filename_de = values.file_de.name == undefined ? isDeutsch : values.file_de.name;
 
-                    var urlupload = process.env.NEXT_PUBLIC_BASE_URL_API;
-                    const response: any = await axios.put(
-                      `${urlupload}/downloads_manuals/create`,
-                      formData
-                    );
-                    if (response.data.status == "success") {
-                      Swal.fire(
-                        "Success!",
-                        "Your data has been uploaded.",
-                        "success"
-                      ).then(function () {
-                        router.push("/admin/downloads_manuals");
-                      });
-                    } else {
-                      Swal.fire(
-                        "Error!",
-                        "Please check your input.",
-                        "error"
-                      ).then(function () {
-                        return false;
-                      });
-                    }
+              if (values.file_en.name != undefined || values.file_fr.name != undefined || values.file_es.name != undefined || values.file_de.name != undefined) {
+                var reader = new FileReader();
+                reader.onload = function (event: any) {
+                  var imagevalue = event.target.result;
+                  fetch(imagevalue)
+                    .then((res) => res.blob())
+                    .then(async (blob) => {
+                      var formData = new FormData();
+                      formData.append("dm_date", dm_date);
+                      formData.append("dm_subject", values.dm_subject);
+                      formData.append("dm_category", String(category));
+                      formData.append("dm_horse_power", String(dmhorsepower));
+                      formData.append("dm_stroke_models", String(dmstrokemodels));
+                      formData.append("English", String(isEnglish));
+                      formData.append("file_en", blob, filename_en);
+                      formData.append("Francais", String(isFrancais));
+                      formData.append("file_fr", blob, filename_fr);
+                      formData.append("Espanol", String(isEspanol));
+                      formData.append("file_es", blob, filename_es);
+                      formData.append("Deutsch", String(isDeutsch));
+                      formData.append("file_de", blob, filename_de);
+                      formData.append("dm_status", String(status));
+
+                      var urlupload = process.env.NEXT_PUBLIC_BASE_URL_API;
+                      const response: any = await axios.put(
+                        `${urlupload}/downloads_manuals/create`,
+                        formData
+                      );
+                      if (response.data.status == "success") {
+                        Swal.fire(
+                          "Success!",
+                          "Your data has been uploaded.",
+                          "success"
+                        ).then(function () {
+                          router.push("/admin/downloads_manuals");
+                        });
+                      } else {
+                        Swal.fire(
+                          "Error!",
+                          "Please check your input.",
+                          "error"
+                        ).then(function () {
+                          return false;
+                        });
+                      }
+                    });
+                };
+                if (values.file_en) {
+                  reader.readAsDataURL(values.file_en);
+                }
+                if (values.file_fr) {
+                  reader.readAsDataURL(values.file_fr);
+                }
+                if (values.file_es) {
+                  reader.readAsDataURL(values.file_es);
+                }
+                if (values.file_de) {
+                  reader.readAsDataURL(values.file_de);
+                }
+                else {
+                }
+              }
+              else {
+                var formData = new FormData();
+                formData.append("dm_date", dm_date);
+                formData.append("dm_subject", values.dm_subject);
+                formData.append("dm_category", String(category));
+                formData.append("dm_horse_power", String(dmhorsepower));
+                formData.append("dm_stroke_models", String(dmstrokemodels));
+                formData.append("English", "");
+                // formData.append("file_en", blob, filename_en);
+                formData.append("Francais", "");
+                // formData.append("file_fr", blob, filename_fr);
+                formData.append("Espanol", "");
+                // formData.append("file_es", blob, filename_es);
+                formData.append("Deutsch", "");
+                // formData.append("file_de", blob, filename_de);
+                formData.append("dm_status", String(status));
+                var urlupload = process.env.NEXT_PUBLIC_BASE_URL_API;
+                const response: any = await axios.put(
+                  `${urlupload}/downloads_manuals/create`,
+                  formData
+                );
+                if (response.data.status == "success") {
+                  Swal.fire(
+                    "Success!",
+                    "Your data has been uploaded.",
+                    "success"
+                  ).then(function () {
+                    router.push("/admin/downloads_manuals");
                   });
-              };
-              reader.readAsDataURL(values.file_en);
-              reader.readAsDataURL(values.file_fr);
-              reader.readAsDataURL(values.file_es);
-              reader.readAsDataURL(values.file_de);
+                } else {
+                  Swal.fire(
+                    "Error!",
+                    "Please check your input.",
+                    "error"
+                  ).then(function () {
+                    return false;
+                  });
+                }
+              }
               setSubmitting(false);
             }}
           >

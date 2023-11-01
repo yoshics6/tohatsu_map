@@ -6,7 +6,7 @@ export default async function saveAsExcel({ rows }: any) {
 
   const ws = wb.addWorksheet();
 
-  ws.columns = [{ width: 5 }, { width: 50 }];
+  ws.columns = [{ width: 5 }, { width: 25 }, { width: 50 }];
   const row: any = ws.addRow(["No", "Post Date", "Category Name"]);
   row.font = {
     bold: true,

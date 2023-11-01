@@ -47,7 +47,7 @@ function Edit() {
           alt="new_title"
           src={values.file_obj}
           width={200}
-          height={100}
+          height={200}
         />
       );
     } else if (data) {
@@ -58,7 +58,7 @@ function Edit() {
             alt="new_title"
             src={`/upload/news/${data[0].news_image}`}
             width={200}
-            height={100}
+            height={200}
           />
         );
       }

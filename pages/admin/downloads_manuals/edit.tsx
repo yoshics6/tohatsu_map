@@ -42,7 +42,8 @@ function Edit() {
   const [dm_additional_file_fr, setDmFrFile] = React.useState<any>("");
   const [dm_additional_file_es, setDmEsFile] = React.useState<any>("");
   const [dm_additional_file_de, setDmDeFile] = React.useState<any>("");
-  const [isEnglish, setIsEnglish] = React.useState<any>("English");
+  const [isEnglishChk, setIsEnglishChk] = React.useState<any>("");
+  const [isEnglish, setIsEnglish] = React.useState<any>(false);
   const [isFrancais, setIsFrancais] = React.useState<any>(false);
   const [isFrancaisChk, setIsFrancaisChk] = React.useState<any>("");
   const [isEspanol, setIsEspanol] = React.useState<any>(false);
@@ -58,25 +59,25 @@ function Edit() {
 
   const showPreviewImageEn = (values: any) => {
     return (
-      <div style={{ color: "green" }}>Old File : {dm_additional_file_en.substring(dm_additional_file_en.length - 4) == 'blob' ? '' : dm_additional_file_en}</div>
+      <div style={{ color: "green" }}>Old File : {dm_additional_file_en.substring(dm_additional_file_en.length - 5) == 'false' ? '' : dm_additional_file_en}</div>
     );
   };
 
   const showPreviewImageFr = (values: any) => {
     return (
-      <div style={{ color: "green" }}>Old File : {dm_additional_file_fr.substring(dm_additional_file_fr.length - 4) == 'blob' ? '' : dm_additional_file_fr}</div>
+      <div style={{ color: "green" }}>Old File : {dm_additional_file_fr.substring(dm_additional_file_fr.length - 5) == 'false' ? '' : dm_additional_file_fr}</div>
     );
   };
 
   const showPreviewImageEs = (values: any) => {
     return (
-      <div style={{ color: "green" }}>Old File : {dm_additional_file_es.substring(dm_additional_file_es.length - 4) == 'blob' ? '' : dm_additional_file_es}</div>
+      <div style={{ color: "green" }}>Old File : {dm_additional_file_es.substring(dm_additional_file_es.length - 5) == 'false' ? '' : dm_additional_file_es}</div>
     );
   };
 
   const showPreviewImageDe = (values: any) => {
     return (
-      <div style={{ color: "green" }}>Old File : {dm_additional_file_de.substring(dm_additional_file_de.length - 4) == 'blob' ? '' : dm_additional_file_de}</div>
+      <div style={{ color: "green" }}>Old File : {dm_additional_file_de.substring(dm_additional_file_de.length - 5) == 'false' ? '' : dm_additional_file_de}</div>
     );
   };
 
@@ -94,11 +95,13 @@ function Edit() {
           setDmStatus(value.payload[0].dm_status);
           setDmhorsepower(value.payload[0].dm_horse_power);
           setDmstrokemodels(value.payload[0].dm_stroke_models);
-          setIsFrancaisChk(value.payload[0].dm_file_fr == "Francais" ? true : false);
-          setIsEspanolChk(value.payload[0].dm_file_es == "Espanol" ? true : false);
-          setIsDeutschChk(value.payload[0].dm_file_de == "Deutsch" ? true : false);
-          setIsFrancais(value.payload[0].dm_file_fr == "Francais" ? true : false);
-          setIsEspanol(value.payload[0].dm_file_es == "Espanol" ? true : false);
+          setIsEnglishChk(value.payload[0].dm_file_en == "English" ? "English" : false);
+          setIsFrancaisChk(value.payload[0].dm_file_fr == "Francais" ? "Francais" : false);
+          setIsEspanolChk(value.payload[0].dm_file_es == "Espanol" ? "Espanol" : false);
+          setIsDeutschChk(value.payload[0].dm_file_de == "Deutsch" ? "Deutsch" : false);
+          setIsEnglish(value.payload[0].dm_file_en == "English" ? "English" : false);
+          setIsFrancais(value.payload[0].dm_file_fr == "Francais" ? "Francais" : false);
+          setIsEspanol(value.payload[0].dm_file_es == "Espanol" ? "Espanol" : false);
           setIsDeutsch(value.payload[0].dm_file_de == "Deutsch" ? "Deutsch" : false);
         }
       }
@@ -117,8 +120,10 @@ function Edit() {
   // setIsEnglish((current: any) => !current);
   const handleChangeEn = (event: { target: { checked: any; }; }) => {
     if (event.target.checked) {
+      setIsEnglishChk(true);
       setIsEnglish("English");
     } else {
+      setIsEnglishChk(false);
       setIsEnglish("");
     }
   };
@@ -270,8 +275,8 @@ function Edit() {
             </Grid>
             <br />
             <div>
-              Additional File * <br />
-              <Box style={{ color: "red" }}>Please fill in at least 1 additional file. default English</Box><br />
+              Additional File * <br /><br />
+              {/* <Box style={{ color: "red" }}>Please fill in at least 1 additional file. default English</Box><br /> */}
               <label htmlFor="English">
                 <input
                   type="checkbox"
@@ -279,7 +284,7 @@ function Edit() {
                   onChange={handleChangeEn}
                   id="English"
                   name="English"
-                  checked
+                  checked={isEnglishChk}
                 />
                 &nbsp; English
               </label>
@@ -326,43 +331,43 @@ function Edit() {
             <br /><br />
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                {/* {isEnglish ? */}
-                <>
-                  <span style={{ color: "000" }}>
-                    English File (PDF/JPG) *
-                  </span>
-                  <input
-                    type="file"
-                    onChange={(e: React.ChangeEvent<any>) => {
-                      e.preventDefault();
-                      if (e.target.files[0]) {
-                        if ((e.target.files[0].size / 1024) > 102400) {
-                          Swal.fire(
-                            "Warning",
-                            "Your data has been uploaded.",
-                            "warning"
-                          )
-                          setFieldValue("file_en", "");
-                        } else {
-                          setFieldValue("file_en", e.target.files[0]);
-                          setFieldValue(
-                            "file_obj",
-                            URL.createObjectURL(e.target.files[0])
-                          );
+                {isEnglish ?
+                  <>
+                    <span style={{ color: "000" }}>
+                      English File (PDF/JPG) *
+                    </span>
+                    <input
+                      type="file"
+                      onChange={(e: React.ChangeEvent<any>) => {
+                        e.preventDefault();
+                        if (e.target.files[0]) {
+                          if ((e.target.files[0].size / 1024) > 102400) {
+                            Swal.fire(
+                              "Warning",
+                              "Your data has been uploaded.",
+                              "warning"
+                            )
+                            setFieldValue("file_en", "");
+                          } else {
+                            setFieldValue("file_en", e.target.files[0]);
+                            setFieldValue(
+                              "file_obj",
+                              URL.createObjectURL(e.target.files[0])
+                            );
+                          }
                         }
-                      }
-                    }}
-                    name="file_en"
-                    accept="image/* , .pdf"
-                    id="file_en"
-                    style={{ padding: "20px 0 0 20px" }}
-                  />
-                  <div>
-                    {showPreviewImageEn(values)}
-                  </div>
-                  <Box style={{ color: "red" }}>* File size should not be over 100MB</Box>
-                </>
-                {/* : ''} */}
+                      }}
+                      name="file_en"
+                      accept="image/* , .pdf"
+                      id="file_en"
+                      style={{ padding: "20px 0 0 20px" }}
+                    />
+                    <div>
+                      {showPreviewImageEn(values)}
+                    </div>
+                    <Box style={{ color: "red" }}>* File size should not be over 100MB</Box>
+                  </>
+                  : ''}
               </Grid>
               <Grid item xs={6}>
                 {isFrancais ?
@@ -485,7 +490,7 @@ function Edit() {
                   : ''}
               </Grid>
             </Grid>
-            <br /><br />
+            <br />
             <Field
               name="dm_status"
               style={{ marginTop: 16 }}
@@ -563,6 +568,40 @@ function Edit() {
                 )
                 return false;
               }
+
+              if (isEnglish == "English" && values.file_en.name == undefined && dm_additional_file_en.substring(dm_additional_file_en.length - 5) == 'false') {
+                Swal.fire(
+                  "Warning!",
+                  "Please upload the file.",
+                  "info"
+                )
+                return false;
+              }
+              else if (isFrancais == "Francais" && values.file_fr.name == undefined && dm_additional_file_fr.substring(dm_additional_file_fr.length - 5) == 'false') {
+                Swal.fire(
+                  "Warning!",
+                  "Please upload the file.",
+                  "info"
+                )
+                return false;
+              }
+              else if (isEspanol == "Espanol" && values.file_es.name == undefined && dm_additional_file_es.substring(dm_additional_file_es.length - 5) == 'false') {
+                Swal.fire(
+                  "Warning!",
+                  "Please upload the file.",
+                  "info"
+                )
+                return false;
+              }
+              else if (isDeutsch == "Deutsch" && values.file_de.name == undefined && dm_additional_file_de.substring(dm_additional_file_de.length - 5) == 'false') {
+                Swal.fire(
+                  "Warning!",
+                  "Please upload the file.",
+                  "info"
+                )
+                return false;
+              }
+              else { }
 
               const value_date = dayjs(date, "YYYY-MM-DD").toDate();
               let day: any = value_date.getDate();

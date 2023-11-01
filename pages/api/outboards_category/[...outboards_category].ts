@@ -170,7 +170,7 @@ router.post(
       ).then((result) => {
         return result;
       });
-      res.status(200).json({ status: "success" });
+      res.status(200).json({ status: reponse });
     });
   }
 );
@@ -204,7 +204,6 @@ async function importExcelUser(url: string) {
       }
     })
   );
-
   return status;
 }
 

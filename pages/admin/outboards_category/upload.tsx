@@ -32,13 +32,13 @@ const showFormExcel = ({ values, setFieldValue }: FormikProps<any>) => {
     <Form>
       <Card>
         <CardContent sx={{ padding: 4 }}>
-        <Typography
+          <Typography
             sx={{ flex: "1 1 100%" }}
             variant="h6"
             id="tableTitle"
             component="div"
           >
-            Setting {">"} Text No {">"} Import Excel
+            Outboards {">"} Category {">"} Import Excel
           </Typography>
           <Typography gutterBottom variant="h3">
             {/* Upload User by Excel */}
@@ -114,7 +114,7 @@ const showFormExcel = ({ values, setFieldValue }: FormikProps<any>) => {
                       >
                         File Format:{" "}
                         <a
-                          href={`/format/outboards_category/Upload_Text_No.xlsx`}
+                          href={`/format/outboards_category/Upload_Outboards_Category.xlsx`}
                           style={{
                             marginLeft: "10px",
                             color: "blue",
