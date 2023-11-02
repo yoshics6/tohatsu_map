@@ -109,7 +109,9 @@ router.post(
     form.parse(req, async (err, fields, files) => {
       const { contact_id } = fields;
       let id = contact_id.toString();
-      await connection.query(`DELETE FROM contact_broc_req WHERE contact_id IN (${id})`);
+      await connection.query(
+        `DELETE FROM contact_broc_req WHERE contact_id IN (${id})`
+      );
       res.status(200).json({ status: "success" });
     });
   }
