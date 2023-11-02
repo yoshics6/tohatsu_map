@@ -26,7 +26,7 @@ interface CoverPaperData {
   oc_category_name?: string;
   oc_created_at?: string;
 }
-interface CoverPaper extends Array<CoverPaperData> { }
+interface CoverPaper extends Array<CoverPaperData> {}
 
 // Middleware
 router.use(async (req: NextApiRequest, res: NextApiResponse, next) => {
@@ -40,7 +40,7 @@ router.get(
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(
-        `SELECT * FROM outboards_category ORDER BY CAST(oc_category_name AS UNSIGNED)`
+        `SELECT * FROM outboards_category ORDER BY oc_date desc`
       );
       res.status(200).json({ status: "success", data: response });
     } catch {
@@ -56,7 +56,7 @@ router.get(
     try {
       console.log(keyword);
       const [response]: any = await connection.query(
-        `SELECT * FROM outboards_category WHERE oc_date LIKE ? OR oc_category_name LIKE ? ORDER BY CAST(oc_category_name AS UNSIGNED)`,
+        `SELECT * FROM outboards_category WHERE oc_date LIKE ? OR oc_category_name LIKE ? ORDER BY oc_date desc`,
         ["%" + keyword + "%", "%" + keyword + "%"]
       );
       res.status(200).json({ status: "success", data: response });
@@ -94,7 +94,8 @@ router.put(
       );
       if (check.length === 0) {
         await connection.query(
-          "INSERT INTO outboards_category (oc_date , oc_category_name) " + " VALUES (?,?)",
+          "INSERT INTO outboards_category (oc_date , oc_category_name) " +
+            " VALUES (?,?)",
           [oc_date, oc_category_name]
         );
         res.status(200).json({ status: "success" });
@@ -150,7 +151,9 @@ router.post(
     form.parse(req, async (err, fields, files) => {
       const { oc_id } = fields;
       let id = oc_id.toString();
-      await connection.query(`DELETE FROM outboards_category WHERE oc_id IN (${id})`);
+      await connection.query(
+        `DELETE FROM outboards_category WHERE oc_id IN (${id})`
+      );
       res.status(200).json({ status: "success" });
     });
   }

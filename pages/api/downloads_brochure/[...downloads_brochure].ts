@@ -21,15 +21,15 @@ declare module "next" {
 }
 
 interface Data {
-  db_id: string,
-  db_subject: string,
-  db_date: string,
-  db_category: string,
-  db_file: string,
-  db_status: string,
-  db_create_at: string,
+  db_id: string;
+  db_subject: string;
+  db_date: string;
+  db_category: string;
+  db_file: string;
+  db_status: string;
+  db_create_at: string;
 }
-interface News extends Array<Data> { }
+interface News extends Array<Data> {}
 
 // Middleware
 router.use(async (req: NextApiRequest, res: NextApiResponse, next) => {
@@ -60,7 +60,13 @@ router.get(
       const [response]: any = await connection.query(
         `SELECT * FROM downloads_brochure 
          WHERE db_date LIKE ? OR db_subject LIKE ? OR db_category LIKE ? OR db_file LIKE ? OR db_status LIKE ? ORDER BY db_date DESC, db_created_at DESC`,
-        ["%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%", "%" + keyword + "%"]
+        [
+          "%" + keyword + "%",
+          "%" + keyword + "%",
+          "%" + keyword + "%",
+          "%" + keyword + "%",
+          "%" + keyword + "%",
+        ]
       );
       res.status(200).json({ status: "success", data: response });
     } catch {
@@ -93,7 +99,10 @@ router.put(
       const { db_date, db_subject, db_category, db_file, db_status } = fields;
       const name =
         Math.random().toString(16).slice(2) + "_" + files.file.originalFilename;
-      fs.copyFileSync(files.file.filepath, `public/upload/downloads_brochure/${name}`);
+      fs.copyFileSync(
+        files.file.filepath,
+        `public/upload/downloads_brochure/${name}`
+      );
       // let arr = 0;
       // const [check]: any = await connection.query(
       //   "SELECT MAX(arr) as arr FROM news"
@@ -115,7 +124,8 @@ router.post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { db_id, db_date, db_subject, db_category, db_file, db_status } = fields;
+      const { db_id, db_date, db_subject, db_category, db_file, db_status } =
+        fields;
       await connection.query(
         "UPDATE downloads_brochure SET db_date = ?, db_subject = ?, db_category = ? , db_status = ? WHERE db_id = ?",
         [db_date, db_subject, db_category, db_status, db_id]
@@ -130,10 +140,14 @@ router.post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files: any) => {
-      const { db_id, db_date, db_subject, db_category, db_file, db_status } = fields;
+      const { db_id, db_date, db_subject, db_category, db_file, db_status } =
+        fields;
       const name =
         Math.random().toString(16).slice(2) + "_" + files.file.originalFilename;
-      fs.copyFileSync(files.file.filepath, `public/upload/downloads_brochure/${name}`);
+      fs.copyFileSync(
+        files.file.filepath,
+        `public/upload/downloads_brochure/${name}`
+      );
       await connection.query(
         "UPDATE downloads_brochure SET db_file = ? WHERE db_id = ?",
         [name, db_id]
@@ -153,7 +167,9 @@ router.post(
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
       const { db_id } = fields;
-      await connection.query(`DELETE FROM downloads_brochure WHERE db_id = ${db_id}`);
+      await connection.query(
+        `DELETE FROM downloads_brochure WHERE db_id = ${db_id}`
+      );
       res.status(200).json({ status: "success" });
     });
   }
@@ -166,7 +182,9 @@ router.post(
     form.parse(req, async (err, fields, files) => {
       const { db_id } = fields;
       let id = db_id.toString();
-      await connection.query(`DELETE FROM downloads_brochure WHERE db_id IN (${id})`);
+      await connection.query(
+        `DELETE FROM downloads_brochure WHERE db_id IN (${id})`
+      );
       res.status(200).json({ status: "success" });
     });
   }

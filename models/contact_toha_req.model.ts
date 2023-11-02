@@ -14,6 +14,5 @@ export type ContactTohaReqState = {
     contact_model: string;
     contact_serial_number: string;
     contact_horsepower: String;
-
   };
 };

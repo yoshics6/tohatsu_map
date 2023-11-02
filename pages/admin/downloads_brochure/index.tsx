@@ -23,14 +23,18 @@ import Tooltip from "@mui/material/Tooltip";
 import Swal from "sweetalert2";
 import router from "next/router";
 import Image from "next/image";
-import AspectRatio from '@mui/joy/AspectRatio';
+import AspectRatio from "@mui/joy/AspectRatio";
 // Table
 import { getComparator, stableSort, Order } from "@/components/table/Table";
 import {
   EnhancedTableHead,
   EnhancedTableToolbarProps,
 } from "@/components/table/admin/downloads_brochure/TableHeads";
-import { getDownloadsBrochure, deleteDownloadsBrochure, deleteAllDownloadsBrochure } from "@/features/admin/downloads_brochure";
+import {
+  getDownloadsBrochure,
+  deleteDownloadsBrochure,
+  deleteAllDownloadsBrochure,
+} from "@/features/admin/downloads_brochure";
 import saveAsExcel from "@/features/admin/downloads_brochure/export";
 
 const DownloadsBrochure: NextPage = () => {
@@ -133,11 +137,18 @@ const DownloadsBrochure: NextPage = () => {
     let DownloadsBrochureelected: readonly string[] = [];
 
     if (selectedIndex === -1) {
-      DownloadsBrochureelected = DownloadsBrochureelected.concat(selected, name);
+      DownloadsBrochureelected = DownloadsBrochureelected.concat(
+        selected,
+        name
+      );
     } else if (selectedIndex === 0) {
-      DownloadsBrochureelected = DownloadsBrochureelected.concat(selected.slice(1));
+      DownloadsBrochureelected = DownloadsBrochureelected.concat(
+        selected.slice(1)
+      );
     } else if (selectedIndex === selected.length - 1) {
-      DownloadsBrochureelected = DownloadsBrochureelected.concat(selected.slice(0, -1));
+      DownloadsBrochureelected = DownloadsBrochureelected.concat(
+        selected.slice(0, -1)
+      );
     } else if (selectedIndex > 0) {
       DownloadsBrochureelected = DownloadsBrochureelected.concat(
         selected.slice(0, selectedIndex),
@@ -197,7 +208,7 @@ const DownloadsBrochure: NextPage = () => {
             id="tableTitle"
             component="div"
           >
-            {'Downloads > Brochure'}
+            {"Downloads > Brochure"}
           </Typography>
         )}
         {numSelected > 0 ? (
@@ -266,44 +277,46 @@ const DownloadsBrochure: NextPage = () => {
               <TableBody>
                 {rows.length > 0
                   ? stableSort(rows, getComparator(order, orderBy))
-                    .slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                    .map((row: any, index) => {
-                      const isItemSelected = isSelected(row.db_id);
-                      const labelId = `enhanced-table-checkbox-${index}`;
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row: any, index) => {
+                        const isItemSelected = isSelected(row.db_id);
+                        const labelId = `enhanced-table-checkbox-${index}`;
 
-                      return (
-                        <TableRow
-                          hover
-                          onClick={(event) => handleClick(event, row.db_id)}
-                          role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.db_id}
-                          selected={isItemSelected}
-                        >
-                          <TableCell padding="checkbox" align="center">
-                            <Checkbox
-                              color="primary"
-                              checked={isItemSelected}
-                              inputProps={{
-                                "aria-labelledby": labelId,
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            id={labelId}
-                            scope="row"
-                            padding="none"
-                            align="center"
+                        return (
+                          <TableRow
+                            hover
+                            onClick={(event) => handleClick(event, row.db_id)}
+                            role="checkbox"
+                            aria-checked={isItemSelected}
+                            tabIndex={-1}
+                            key={row.db_id}
+                            selected={isItemSelected}
                           >
-                            {row.db_date}
-                          </TableCell>
-                          <TableCell align="center">{row.db_subject}</TableCell>
-                          {/* <TableCell align="center" width={150}> */}
+                            <TableCell padding="checkbox" align="center">
+                              <Checkbox
+                                color="primary"
+                                checked={isItemSelected}
+                                inputProps={{
+                                  "aria-labelledby": labelId,
+                                }}
+                              />
+                            </TableCell>
+                            <TableCell
+                              component="th"
+                              id={labelId}
+                              scope="row"
+                              padding="none"
+                              align="center"
+                            >
+                              {row.db_date}
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.db_subject}
+                            </TableCell>
+                            {/* <TableCell align="center" width={150}> */}
                             {/* <Image
                               loading="lazy"
                               src={`/upload/DownloadsBrochure/${row.DownloadsBrochure_image}`}
@@ -322,42 +335,44 @@ const DownloadsBrochure: NextPage = () => {
                                 />
                               </Typography>
                             </AspectRatio> */}
-                          {/* </TableCell> */}
-                          <TableCell align="center">{row.db_file}</TableCell>
-                          <TableCell align="center">{row.db_category}</TableCell>
-                          <TableCell align="center">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              justifyContent="center"
-                              spacing={0}
-                            >
-                              <IconButton
-                                color="primary"
-                                aria-label="edit"
-                                size="large"
-                                onClick={() =>
-                                  router.push(
-                                    `/admin/downloads_brochure/edit?id=${row.db_id}`
-                                  )
-                                }
+                            {/* </TableCell> */}
+                            <TableCell align="center">{row.db_file}</TableCell>
+                            <TableCell align="center">
+                              {row.db_category}
+                            </TableCell>
+                            <TableCell align="center">
+                              <Stack
+                                direction="row"
+                                alignItems="center"
+                                justifyContent="center"
+                                spacing={0}
                               >
-                                <EditIcon fontSize="inherit" />
-                              </IconButton>
-                              |
-                              <IconButton
-                                color="error"
-                                aria-label="delete"
-                                size="large"
-                                onClick={() => Delete(row.db_id)}
-                              >
-                                <DeleteIcon fontSize="inherit" />
-                              </IconButton>
-                            </Stack>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })
+                                <IconButton
+                                  color="primary"
+                                  aria-label="edit"
+                                  size="large"
+                                  onClick={() =>
+                                    router.push(
+                                      `/admin/downloads_brochure/edit?id=${row.db_id}`
+                                    )
+                                  }
+                                >
+                                  <EditIcon fontSize="inherit" />
+                                </IconButton>
+                                |
+                                <IconButton
+                                  color="error"
+                                  aria-label="delete"
+                                  size="large"
+                                  onClick={() => Delete(row.db_id)}
+                                >
+                                  <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                              </Stack>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
                   : ""}
               </TableBody>
             </Table>
